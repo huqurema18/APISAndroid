@@ -20,7 +20,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
-    public class ServicioTask extends AsyncTask<Void, Void, String> {
+import retrofit2.http.Headers;
+
+public class ServicioTask extends AsyncTask<Void, Void, String> {
         //variables del hilo
         private Context httpContext;//contexto
         ProgressDialog progressDialog;//dialogo cargando
@@ -30,6 +32,7 @@ import java.util.Iterator;
         public String username="";
         public String password="";
         public String rol="";
+
         //constructor del hilo (Asynctask)
         public ServicioTask(Context ctx, String linkAPI, String names, String  username, String password, String rol ){
             this.httpContext=ctx;
@@ -38,7 +41,14 @@ import java.util.Iterator;
             this.username=username;
             this.password=password;
             this.rol=rol;
+
         }
+        @Headers({
+                "Content-Type:application/json",
+                "Content-Length:<calculated when request is sent>",
+                "Postman-Token:<calculated when request is sent>",
+                "code-app:2022*01"
+        })
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -50,6 +60,9 @@ import java.util.Iterator;
             String result= null;
 
             String wsURL = linkrequestAPI;
+
+
+
             URL url = null;
             try {
                 // se crea la conexion al api: http://localhost:15009/WEBAPIREST/api/persona
