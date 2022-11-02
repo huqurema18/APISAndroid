@@ -32,7 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-
     Button btnEnviar;
     List<dataclass> contactList;
     RecyclerView recyclerView;
