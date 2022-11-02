@@ -151,8 +151,11 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Error", error.getMessage());
-                Toast.makeText(MainActivity.this, "ERROR al leer datos, revise la conexión del celular "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                try{
+                Toast.makeText(MainActivity.this, "ERROR al leer datos, revise la conexión del celular \n"+error.getMessage(), Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, "ERROR al leer datos, revise la conexión del celular ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         Volley.newRequestQueue(this).add(postResquest);
