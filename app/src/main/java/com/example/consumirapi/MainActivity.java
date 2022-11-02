@@ -2,6 +2,7 @@ package com.example.consumirapi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     EditText txtUser, txtTitle, txtBody;
     Button btnEnviar;
     List<dataclass> contactList;
+    public String url1 = "https://647f-186-144-129-49.ngrok.io";
 
     //prueba11
 
@@ -53,15 +55,53 @@ public class MainActivity extends AppCompatActivity {
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LeerWs();
+                //LeerWs();
                 //enviarWs("nuevito","nuevito69","456","novato");
                 //enviarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
                 //actualizarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
                 //eliminarWs();
                 //consumirServicio();
                 //callRetrofit();
+                callRetrofitPUT();
             }
         });
+    }
+
+    private void callRetrofitPUT() {
+            /*String nombre = editNombre.getText().toString();
+            String userName = editUserName.getText().toString();
+            String password = editPassword.getText().toString();
+            String rol = editRol.getText().toString();*/
+        String nombre = "PUTfunciona2";
+        String userName = "PUTfunciona2";
+        String password = "PUTfunciona2";
+        String rol = "rolfuncionaput2";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url1)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            postRquest apiUser = retrofit.create(postRquest.class);
+            //Pasar datos modificados
+            pos data = new pos(nombre,userName,password,rol);
+            Call<pos> call = apiUser.updateDatos("8",data);
+            call.enqueue(new Callback<pos>() {
+                @Override
+                public void onResponse(Call<pos> call, retrofit2.Response<pos> response) {
+                    System.out.println("Codigo Update: " + response.code());
+                    if (response.isSuccessful()) {
+                        Toast.makeText(MainActivity.this, "Usuario modificado", Toast.LENGTH_SHORT).show();
+                        //Intent intent = new Intent(ModificarActivity.this, MainActivity.class);
+                        //startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<pos> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "ERROR DE MODIFICACION", Toast.LENGTH_SHORT).show();
+                    System.out.println("ERROR: " + t.getMessage());
+                }
+            });
     }
 
     private void callRetrofit() {
@@ -72,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Retrofit retrofit=new Retrofit.Builder()
-                .baseUrl("https://084f-186-144-129-49.ngrok.io")
+                .baseUrl(url1)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         postRquest postRquest=retrofit.create(com.example.consumirapi.postRquest.class);
@@ -105,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         String rol="user";
 
 
-        ServicioTask servicioTask= new ServicioTask(this,"https://084f-186-144-129-49.ngrok.io/",names,username,password,rol);
+        ServicioTask servicioTask= new ServicioTask(this,url1,names,username,password,rol);
         servicioTask.execute();
 
 
@@ -115,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         //String url = "https://jsonplaceholder.typicode.com/posts/1";
         //String url="http://192.168.4.1:8080/api/users";
-        String url ="https://084f-186-144-129-49.ngrok.io/api/users";
+        String url =url1+"/api/users";
         StringRequest postResquest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -172,10 +212,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void enviarWs(final String names, final String username, final String password,final String rol) {
 
-        String url = "https://30df-186-144-129-49.ngrok.io/api/users";
 
 
-        StringRequest postResquest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+        StringRequest postResquest = new StringRequest(Request.Method.POST, url1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(MainActivity.this, "RESULTADO POST = " + response, Toast.LENGTH_LONG).show();
@@ -239,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void eliminarWs() {
 
-        String url = "https://084f-186-144-129-49.ngrok.io/api/users/7";
+        String url = url1+"/api/users/7";
 
         StringRequest postResquest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
             @Override
