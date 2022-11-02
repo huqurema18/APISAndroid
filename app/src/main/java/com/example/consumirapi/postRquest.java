@@ -16,4 +16,6 @@ public interface postRquest {
 @POST("/api/users")
 Call<pos> postDataintoServer(@Body pos postmodel);
 
+
+
 }
