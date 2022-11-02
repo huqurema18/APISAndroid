@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -52,10 +53,18 @@ public class create_user extends AppCompatActivity {
 
         call.enqueue(new Callback<pos>() {
             @Override
-            public void onResponse(Call<pos> call, retrofit2.Response<pos> response) {
-                Toast.makeText(create_user.this, "Usuario Creado", Toast.LENGTH_SHORT).show();
-                Intent intent =new Intent(create_user.this,MainActivity.class);
-                startActivity(intent);
+            public void onResponse(Call<pos> call, Response<pos> response) {
+                System.out.println("shdfkdhsbhbhhhhhh"+response.code());
+                if(response.code()==200){
+                    Toast.makeText(create_user.this, "Usuario Creado", Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(create_user.this,MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(create_user.this, "Usuario invalido, no fue Creado", Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(create_user.this,MainActivity.class);
+                    startActivity(intent);
+                }
+
             }
 
             @Override

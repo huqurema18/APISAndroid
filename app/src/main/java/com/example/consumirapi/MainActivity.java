@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(context, "Usuario modificado", Toast.LENGTH_SHORT).show();
                         //Intent intent = new Intent(ModificarActivity.this, MainActivity.class);
                         //startActivity(intent);
+                    }else{
+                        Toast.makeText(context, "ERROR al Modificar", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -151,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error", error.getMessage());
+                Toast.makeText(MainActivity.this, "ERROR al leer datos, revise la conexión del celular "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         Volley.newRequestQueue(this).add(postResquest);
@@ -179,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error", error.getMessage());
+
+                    Toast.makeText(context, "ERROR al Eliminar", Toast.LENGTH_SHORT).show();
+
             }
         });
         Volley.newRequestQueue(context).add(postResquest);
