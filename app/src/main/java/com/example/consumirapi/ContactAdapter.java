@@ -1,20 +1,24 @@
 package com.example.consumirapi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHolder> {
 
-    private Context mContext;
-    private List<dataclass> mData;
+    Context mContext;
+    static List<dataclass> mData;
 
     public ContactAdapter(Context mContext, List<dataclass> mData) {
         this.mContext = mContext;
@@ -55,6 +59,50 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
             names=itemView.findViewById(R.id.txNames);
             username=itemView.findViewById(R.id.txusername);
             rol=itemView.findViewById(R.id.txRol);
+ //---------------------------------------------------
+            itemView.setOnClickListener(view -> {
+                Context context =view.getContext();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context);
+                View mview = layoutInflaterAndroid.inflate(R.layout.activity_edita_user, null);
+                final EditText EditNames =(EditText) mview.findViewById(R.id.edNamesPUT);
+                final EditText EditUser =(EditText) mview.findViewById(R.id.edUsernamePUT);
+                final EditText EditPassword =(EditText) mview.findViewById(R.id.edPasswordPUT);
+                final EditText EditRol =(EditText) mview.findViewById(R.id.edRolPUT);
+                final TextView textid =(TextView) mview.findViewById(R.id.textidextract);
+                final Button EditInflatDelete=(Button) mview.findViewById(R.id.btnDeleteEditUser);
+                final Button EditInflatEdit=(Button) mview.findViewById(R.id.btnEditUser);
+                textid.setText(mData.get(getAdapterPosition()).getId()+"");
+                EditNames.setText(mData.get(getAdapterPosition()).getNames()+"");
+                EditUser.setText(mData.get(getAdapterPosition()).getUsername()+"");
+                EditRol.setText(mData.get(getAdapterPosition()).getRol()+"");
+
+
+                EditInflatEdit.setOnClickListener(view1 -> {
+                    MainActivity main=new MainActivity();
+                    main.callRetrofitPUT(mData.get(getAdapterPosition()).getId(),context,EditNames.getText().toString(),
+                            EditUser.getText().toString(),EditPassword.getText().toString(),EditRol.getText().toString());
+                    Intent intent =new Intent(view1.getContext(),MainActivity.class);
+                    context.startActivity(intent);
+                });
+                EditInflatDelete.setOnClickListener(view1 -> {
+                    MainActivity main=new MainActivity();
+                    main.eliminarWs(mData.get(getAdapterPosition()).getId(),context);
+                    Intent intent =new Intent(view1.getContext(),MainActivity.class);
+                    context.startActivity(intent);
+                });
+
+
+                builder.setView(mview);
+                AlertDialog dialog=builder.create();
+                dialog.show();
+
+
+
+
+
+            });
 
         }
     }
