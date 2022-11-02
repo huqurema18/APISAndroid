@@ -1,8 +1,9 @@
 package com.example.consumirapi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     EditText txtUser, txtTitle, txtBody;
     Button btnEnviar;
     List<dataclass> contactList;
+    RecyclerView recyclerView;
     public String url1 = "https://647f-186-144-129-49.ngrok.io";
 
     //prueba11
@@ -51,18 +53,19 @@ public class MainActivity extends AppCompatActivity {
         txtBody = findViewById(R.id.txtBody);
         btnEnviar = findViewById(R.id.btnEnviar);
         contactList=new ArrayList<>();
+        recyclerView=findViewById(R.id.recyclerview);
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //LeerWs();
+                LeerWs();
                 //enviarWs("nuevito","nuevito69","456","novato");
                 //enviarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
                 //actualizarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
                 //eliminarWs();
                 //consumirServicio();
                 //callRetrofit();
-                callRetrofitPUT();
+                //callRetrofitPUT();
             }
         });
     }
@@ -175,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
                         contactList.add(model);
                     }
-
+                    putDataIntoRecyclerView(contactList);
                     txtUser.setText(contactList.get(2).getNames());
                     //String title = jsonObject.getString("date");
                     txtTitle.setText(contactList.get(2).getUsername());
@@ -203,6 +206,14 @@ public class MainActivity extends AppCompatActivity {
         });
         Volley.newRequestQueue(this).add(postResquest);
     }
+
+    private void putDataIntoRecyclerView(List<dataclass> contactList) {
+        ContactAdapter adapery=new ContactAdapter(this, contactList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(adapery);
+    }
+
     @Headers({
             "Content-Type:application/json",
             "Content-Length:<calculated when request is sent>",
